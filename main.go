@@ -64,6 +64,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 		// if (bdd response = ok) {
 		http.Redirect(w, r, "/", http.StatusSeeOther) // redirige vers accueil
+		return
 	}
 
 	http.Error(w, "Erreur: methode interdite", http.StatusMethodNotAllowed)
@@ -80,7 +81,7 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	fmt.Println("Serveur lancé sur (http://localhost" + port + ")")
-	
+
 	err := http.ListenAndServe(port, mux)
 	if err != nil {
 		fmt.Println("erreur serveur:", err)
