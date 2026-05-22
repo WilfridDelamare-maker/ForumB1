@@ -48,13 +48,31 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Error(w, "Methode interdite", http.StatusMethodNotAllowed)
+}
 
-	
+func LoginHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		renderTemplate(w, "login.tmpl")
+		return
+	}
+
+	if r.Method == http.MethodPost {
+		email := r.FormValue("email")
+		password := r.FormValue("password")
+
+		fmt.Println(email, password) //envoyer dans la bdd en vrai :)
+
+		// if (bdd response = ok) {
+		http.Redirect(w, r, "/", http.StatusSeeOther) // redirige vers accueil
+	}
+
+	http.Error(w, "Erreur: methode interdite", http.StatusMethodNotAllowed)
 }
 
 func main() {
 	http.HandleFunc("/", Home)
 	http.HandleFunc("/register", RegisterHandler)
+	http.HandleFunc("/login", LoginHandler)
 
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
