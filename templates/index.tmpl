@@ -20,5 +20,22 @@
         <a>Page aléatoire</a>
     </div>
 
+    
+    {{ range . }}
+    <div class="data">
+        <h3>
+            <a href="/posts/{{ .ID }}">
+                {{ .Title }}
+            </a>
+        </h3>
+        <p>{{ .Content }}</p>
+        <small>{{ .Author }} - {{ .Category }}</small>
+    </div>
+
+    {{ else }}
+    <p class="data">Void for now</p>
+
+     {{ end }}
+
 </body>
 </html>

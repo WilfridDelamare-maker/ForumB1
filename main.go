@@ -2,87 +2,46 @@ package main
 
 import (
 	"fmt"
+	"forum/database"
 	"net/http"
-	"html/template"
+	"strings"
+	"forum/handlers"
 )
 
 const port = ":8080"
 
-func renderTemplate(w http.ResponseWriter, tmpl string) {
-	t, err := template.ParseFiles("./templates/" + tmpl )
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	err = t.Execute(w, nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+func PostHandler(w http.ResponseWriter, r *http.Request) {
+	id := strings.TrimPrefix(r.URL.Path, "/posts/")
+	fmt.Println("Post numéro: ", id)
 
-}
-
-func Home( w http.ResponseWriter, r *http.Request) {
-	// gérer les routes non prévues
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		return
-	}
-	renderTemplate(w, "index.tmpl")
-}
-
-func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		renderTemplate(w, "register.tmpl")
-		return
+		handlers.RenderTemplate(w, "post.tmpl", nil)
 	}
-	if r.Method == http.MethodPost {
-		email := r.FormValue("email")
-		username := r.FormValue("username")
-		password := r.FormValue("password")
-
-		fmt.Println(email, username, password) //faudra envoyer dans la bdd ces datas...
-
-		http.Redirect(w, r, "/", http.StatusSeeOther) // redirige vers index avec 303
-		return
-	}
-
-	http.Error(w, "Methode interdite", http.StatusMethodNotAllowed)
-}
-
-func LoginHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
-		renderTemplate(w, "login.tmpl")
-		return
-	}
-
-	if r.Method == http.MethodPost {
-		email := r.FormValue("email")
-		password := r.FormValue("password")
-
-		fmt.Println(email, password) //envoyer dans la bdd en vrai :)
-
-		// if (bdd response = ok) {
-		http.Redirect(w, r, "/", http.StatusSeeOther) // redirige vers accueil
-		return
-	}
-
-	http.Error(w, "Erreur: methode interdite", http.StatusMethodNotAllowed)
 }
 
 func main() {
+	db, err := database.InitDB()
+	if err != nil {
+		fmt.Println("Erreur database: ", err)
+		return
+	}
+
+	defer db.Close()
+	fmt.Println("Database créée et fonctionnelle")
+
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", Home)
-	mux.HandleFunc("/register", RegisterHandler)
-	mux.HandleFunc("/login", LoginHandler)
+	mux.HandleFunc("/", handlers.Home)
+	mux.HandleFunc("/register", handlers.RegisterHandler)
+	mux.HandleFunc("/login", handlers.LoginHandler)
+	mux.HandleFunc("/posts/", PostHandler)
 
 	fs := http.FileServer(http.Dir("static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	fmt.Println("Serveur lancé sur (http://localhost" + port + ")")
-
-	err := http.ListenAndServe(port, mux)
+	
+	err = http.ListenAndServe(port, mux)
 	if err != nil {
 		fmt.Println("erreur serveur:", err)
 	}

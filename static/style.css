@@ -13,3 +13,7 @@ body {
     border : solid 2px grey;
     margin-top: 25px;
 }
+
+.data {
+    margin-left: 100px;
+}
