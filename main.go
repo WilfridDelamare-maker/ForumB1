@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"html/template"
 	"forum/fake"
+	"forum/database"
 )
 
 const port = ":8080"
@@ -73,6 +74,15 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	db, err := database.InitDB()
+	if err != nil {
+		fmt.Println("Erreur database: ", err)
+		return
+	}
+
+	defer db.Close()
+	fmt.Println("Database créée et fonctionnelle")
+
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", Home)
@@ -84,7 +94,7 @@ func main() {
 
 	fmt.Println("Serveur lancé sur (http://localhost" + port + ")")
 	
-	err := http.ListenAndServe(port, mux)
+	err = http.ListenAndServe(port, mux)
 	if err != nil {
 		fmt.Println("erreur serveur:", err)
 	}
