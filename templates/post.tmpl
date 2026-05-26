@@ -15,9 +15,9 @@
         </small>
     </article>
 
-    <form>
-        <textarea class="comment" placeholder="Qu'avez-vous à dire ?"></textarea>
-        <button class="tohover">Ajouter un commentaire...</button>
+    <form action="/posts/{{ .ID }}/comments" method="POST">
+        <textarea class="comment" name="content" placeholder="Qu'avez-vous à dire ?" required></textarea>
+        <button class="tohover" type="submit">Ajouter un commentaire...</button>
     </form>
 </body>
 </html>
