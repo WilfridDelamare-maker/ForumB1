@@ -166,10 +166,29 @@ article {
     background: var(--panel);
 }
 
+.comment {
+    width: 100%;
+    min-height: 160px;
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+    background: var(--panel);
+    color: var(--text);
+    font: inherit;
+    line-height: 1.5;
+    outline: none;
+    resize: vertical;
+}
+
+.comment:focus {
+    border-color: var(--accent);
+}
+
 form:not(.search) {
     display: grid;
     gap: 12px;
-    width: min(380px, calc(100% - 40px));
+    width: min(820px, calc(100% - 40px));
     margin: 24px auto;
 }
 
