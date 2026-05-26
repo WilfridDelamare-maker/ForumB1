@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h3>Post</h3>
+    <article>
+        <h1>{{ .Title }}</h1>
+        <p>{{ .Content }}</p>
+        <small>
+            Auteur : {{ .Author }} — Catégorie : {{ .Category }}
+        </small>
+    </article>
 </body>
 </html>
