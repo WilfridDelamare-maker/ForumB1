@@ -21,8 +21,8 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", handlers.Home)
-	
+	mux.HandleFunc("GET /{$}", handlers.Home)
+
 	mux.HandleFunc("GET /register", handlers.RegisterHandler)
 	mux.HandleFunc("POST /register", handlers.PostRegisterHandler)
 

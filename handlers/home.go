@@ -21,11 +21,6 @@ func RenderTemplate(w http.ResponseWriter, tmpl string, data any) {
 }
 
 func Home( w http.ResponseWriter, r *http.Request) {
-	// gérer les routes non prévues
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		return
-	}
 	// interdire les methodes non necessaires
 	if r.Method != http.MethodGet {
 		http.Error(w, "Methode interdite", http.StatusMethodNotAllowed)
