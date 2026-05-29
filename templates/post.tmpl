@@ -8,14 +8,23 @@
 </head>
 <body>
     <article>
-        <h1>{{ .Title }}</h1>
-        <p>{{ .Content }}</p>
+        <h1>{{ .Post.Title }}</h1>
+        <p>{{ .Post.Content }}</p>
         <small>
-            Auteur : {{ .Author }} — Catégorie : {{ .Category }}
+            Auteur : {{ .Post.Author }} — Catégorie : {{ .Post.Category }}
         </small>
     </article>
 
-    <form action="/posts/{{ .ID }}/comments" method="POST">
+    {{ range .Comments }}
+        <section>
+            <p>{{ .Content }}</p>
+            <small>Par {{ .Author }}</small>
+        </section>
+    {{ else }}
+        <p>Aucun commentaire pour le moment.</p>
+    {{ end }}
+
+    <form action="/posts/{{ .Post.ID }}/comments" method="POST">
         <textarea class="comment" name="content" placeholder="Qu'avez-vous à dire ?" required></textarea>
         <button class="tohover" type="submit">Ajouter un commentaire...</button>
     </form>

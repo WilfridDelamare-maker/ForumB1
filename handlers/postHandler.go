@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"forum/fake"
+	"forum/models"
 	"net/http"
 	"strconv"
 	"strings"
@@ -22,7 +23,15 @@ func PostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	RenderTemplate(w, "post.tmpl", data)
+	comments := fake.GetCommentByPostID(id)
+
+	datas := models.PostPageData {
+		Post: data,
+		Comments: comments, 
+	}
+
+
+	RenderTemplate(w, "post.tmpl", datas)
 }
 
 func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
