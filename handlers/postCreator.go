@@ -10,11 +10,13 @@ import (
 func PostCreateHandler(w http.ResponseWriter, r *http.Request) {
 	_, isLogged := fake.GetCurrentUser(r)
 
+	data := fake.GetAllCategories()
+
 	if !isLogged {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
-	RenderTemplate(w, "postcreate.tmpl", nil)
+	RenderTemplate(w, "postcreate.tmpl", data)
 }
 
 func PostCreator(w http.ResponseWriter, r *http.Request) {

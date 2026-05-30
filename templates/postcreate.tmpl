@@ -15,6 +15,11 @@
         <label for="content">Contenu</label>
         <textarea id="content" name="content" required></textarea>
 
+        {{ range . }}
+        <input type="checkbox" id="category{id}" name="category{id}">
+        <label for="category{id}">{{ .Name }}</label>
+        {{ end }}
+
         <button type="submit">Publier</button>
     </form>
 </body>
