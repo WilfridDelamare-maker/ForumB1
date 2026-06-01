@@ -84,6 +84,13 @@ button {
     cursor: pointer;
 }
 
+.like {
+    background: var(--text);
+    color: var(--bg);
+    border: 1px solid var(--bg);
+    border-radius: 5px 5px 5px 5px;
+}
+
 .authNav {
     display: flex;
     gap: 14px;
