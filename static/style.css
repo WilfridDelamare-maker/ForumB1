@@ -70,6 +70,10 @@ input {
     outline: none;
 }
 
+input[type="checkbox"] {
+    width: auto;
+}
+
 input:focus {
     border-color: var(--accent);
 }
@@ -196,19 +200,35 @@ article, section {
     border-color: var(--accent);
 }
 
-form:not(.search) {
+.auth-form {
+    display: grid;
+    gap: 12px;
+    width: min(380px, calc(100% - 40px));
+    margin: 24px auto;
+}
+
+.post-create-form,
+.comment-form {
     display: grid;
     gap: 12px;
     width: min(820px, calc(100% - 40px));
     margin: 24px auto;
 }
 
-form:not(.search) input,
-form:not(.search) button {
+.like-form {
+    display: inline-block;
+    margin: 12px 8px 0 0;
+}
+
+.auth-form button,
+.post-create-form button,
+.comment-form button {
     border-radius: 6px;
 }
 
-form:not(.search) button {
+.auth-form button,
+.post-create-form button,
+.comment-form button {
     min-height: 40px;
 }
 
