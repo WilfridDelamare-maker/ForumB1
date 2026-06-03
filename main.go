@@ -42,6 +42,8 @@ func main() {
 	mux.HandleFunc("POST /comments/{id}/like", handlers.CommentLikeHandler)
 	mux.HandleFunc("POST /comments/{id}/dislike", handlers.CommentDislikeHandler)
 
+	mux.HandleFunc("GET /categories", handlers.CategoriesHandler)
+
 	fs := http.FileServer(http.Dir("static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
