@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 )
 
@@ -13,9 +12,21 @@ func PostLoginHandler(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
-	fmt.Println(email, password) //envoyer dans la bdd en vrai :)
+	// faux cookie crée
+	if email == "wilfrid.delamare@ynov.com" && password == "toto" {
+		
+		http.SetCookie(w, &http.Cookie{
+		Name: "session_id",
+		Value: "session_nbr",
+		Path: "/",
+		MaxAge: 3600,
+		HttpOnly: true,
+		})
 
-	// if (bdd response = ok) {
-	http.Redirect(w, r, "/", http.StatusSeeOther) // redirige vers accueil
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	http.Error(w, "Email ou mot de passe erroné", http.StatusUnauthorized)
 
 }
