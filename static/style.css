@@ -324,3 +324,8 @@ body > h3 {
     font-size: 20px;
     text-align: center;
 }
+
+.elseP {
+    text-align: center;
+    color: var(--text);
+}

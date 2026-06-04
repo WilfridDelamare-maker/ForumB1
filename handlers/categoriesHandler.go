@@ -7,10 +7,12 @@ import (
 )
 
 func CategoriesHandler(w http.ResponseWriter, r *http.Request) {
-	_, isLogged := fake.GetCurrentUser(r)
-	data := models.CategoriesLogged {
-		Categories: fake.GetAllCategories(),
+	username, isLogged := fake.GetCurrentUser(r)
+
+	data := models.TemplateData {
+		Username: username,
 		IsLogged: isLogged,
+		Categories: fake.GetAllCategories(),
 	}
 
 	RenderTemplate(w, "categories.tmpl", data)

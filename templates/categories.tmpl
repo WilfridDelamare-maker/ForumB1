@@ -14,8 +14,14 @@
             <button class="tohover" type="submit">OK</button>
         </form>
         <nav class="authNav">
+            {{ if .IsLogged }}
+            <form method="POST" action="/logout">
+                <button class="tohover" type="submit">Se déconnecter</button>
+            </form>
+            {{ else }}
             <a class="tohover" href="register">S'inscrire</a>
             <a class="tohover" href="login">Se connecter</a>
+            {{ end }}
         </nav>
     </header>
 

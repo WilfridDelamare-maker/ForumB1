@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"forum/models"
 	"net/http"
+	"time"
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -11,8 +13,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		errorMessage = "Identifiant ou mot de passe incorrect"
 	}
 
-	data := map[string]any{
-		"Error": errorMessage,
+	data := models.TemplateData{
+		Error: errorMessage,
 	}
 
 	RenderTemplate(w, "login.tmpl", data)
@@ -36,7 +38,7 @@ func PostLoginHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-
+	time.Sleep(2* time.Second)
 	http.Redirect(w, r, "/login?error=1", http.StatusSeeOther)
 }
 

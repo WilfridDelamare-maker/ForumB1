@@ -3,30 +3,43 @@ package handlers
 import (
 	"fmt"
 	"forum/fake"
+	"forum/models"
 	"net/http"
 	"strings"
 )
 
+// fonction pour rediriger sur page création de post si user = connecté
 func PostCreateHandler(w http.ResponseWriter, r *http.Request) {
-	_, isLogged := fake.GetCurrentUser(r)
+	username, isLogged := fake.GetCurrentUser(r)
 
+	err := ""
 	if !isLogged {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
 
-	data := fake.GetAllCategories()
+	if r.URL.Query().Get("error") == "1" {
+		err = "Titre, Contenu ou Catégories manquant(s)"
+	}
+
+	data := models.TemplateData{
+		Username: username,
+		IsLogged: isLogged,
+		Categories: fake.GetAllCategories(),
+		Error: err,
+	}
 
 	RenderTemplate(w, "postcreate.tmpl", data)
 }
 
+// fonction pour poster le post
 func PostCreator(w http.ResponseWriter, r *http.Request) {
 	title := strings.TrimSpace(r.FormValue("title"))
 	content := strings.TrimSpace(r.FormValue("content"))
 	categories := r.Form["categories"]
 
-	if title == "" || content == "" {
-		http.Error(w, "Erreur : contenu vide", http.StatusBadRequest)
+	if title == "" || content == "" || len(categories) ==0 {
+		http.Redirect(w, r, "/posts/create?error=1", http.StatusSeeOther)
 		return
 	}
 

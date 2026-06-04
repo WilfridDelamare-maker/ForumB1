@@ -2,7 +2,14 @@ package models
 
 type TemplateData struct {
 	Username string
-	Posts []Post
 	IsLogged bool
+
+	Posts []Post
+	Post Post
+
+	Comments []Comments
+
+	Categories []Category
+
 	Error string
 }

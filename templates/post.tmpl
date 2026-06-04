@@ -7,6 +7,23 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+    <header>
+        <a class="brand tohover" href="/">Forum name</a>
+        <form class="search" action="/" method="GET">
+            <input type="text" name="q" placeholder="Rechercher...">
+            <button class="tohover" type="submit">OK</button>
+        </form>
+        <nav class="authNav">
+            {{ if .IsLogged }}
+            <form method="POST" action="/logout">
+                <button class="tohover" type="submit">Se déconnecter</button>
+            </form>
+            {{ else }}
+            <a class="tohover" href="register">S'inscrire</a>
+            <a class="tohover" href="login">Se connecter</a>
+            {{ end }}
+        </nav>
+    </header>
     <article>
         <h1>{{ .Post.Title }}</h1>
         <p>{{ .Post.Content }}</p>
@@ -33,7 +50,7 @@
             </form>
         </section>
     {{ else }}
-        <p>Aucun commentaire pour le moment.</p>
+        <p class="elseP">Aucun commentaire pour le moment.</p>
     {{ end }}
 
     <form class="comment-form" action="/posts/{{ .Post.ID }}/comments" method="POST">

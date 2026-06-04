@@ -23,14 +23,17 @@ func PostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	username, isLogged := fake.GetCurrentUser(r)
+
 	comments := fake.GetCommentByPostID(id)
 
-	datas := models.PostPageData {
+	datas := models.TemplateData {
+		Username: username,
+		IsLogged: isLogged,
 		Post: data,
-		Comments: comments, 
+		Comments: comments,
 	}
-
-
+	
 	RenderTemplate(w, "post.tmpl", datas)
 }
 
