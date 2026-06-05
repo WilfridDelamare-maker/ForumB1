@@ -4,20 +4,10 @@ import (
 	"fmt"
 	"forum/database"
 	"net/http"
-	"strings"
 	"forum/handlers"
 )
 
 const port = ":8080"
-
-func PostHandler(w http.ResponseWriter, r *http.Request) {
-	id := strings.TrimPrefix(r.URL.Path, "/posts/")
-	fmt.Println("Post numéro: ", id)
-
-	if r.Method == http.MethodGet {
-		handlers.RenderTemplate(w, "post.tmpl", nil)
-	}
-}
 
 func main() {
 	db, err := database.InitDB()
@@ -31,10 +21,32 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", handlers.Home)
-	mux.HandleFunc("/register", handlers.RegisterHandler)
-	mux.HandleFunc("/login", handlers.LoginHandler)
-	mux.HandleFunc("/posts/", PostHandler)
+	mux.HandleFunc("GET /{$}", handlers.Home)
+
+	mux.HandleFunc("GET /register", handlers.RegisterHandler)
+	mux.HandleFunc("POST /register", handlers.PostRegisterHandler)
+
+
+	mux.HandleFunc("GET /login", handlers.LoginHandler)
+	mux.HandleFunc("POST /login", handlers.PostLoginHandler)
+
+	mux.HandleFunc("POST /logout", handlers.LogoutHandler)
+
+	mux.HandleFunc("GET /posts/{id}", handlers.PostHandler)
+	mux.HandleFunc("POST /posts/{id}/comments", handlers.CreateCommentHandler)
+
+	mux.HandleFunc("GET /posts/create", handlers.PostCreateHandler)
+	mux.HandleFunc("POST /posts/create", handlers.PostCreator)
+
+	mux.HandleFunc("POST /posts/{id}/like", handlers.PostLikeHandler)
+	mux.HandleFunc("POST /posts/{id}/dislike", handlers.PostDislikeHandler)
+
+	mux.HandleFunc("POST /comments/{id}/like", handlers.CommentLikeHandler)
+	mux.HandleFunc("POST /comments/{id}/dislike", handlers.CommentDislikeHandler)
+
+	mux.HandleFunc("GET /categories", handlers.CategoriesHandler)
+
+	mux.HandleFunc("GET /random", handlers.RandomPageHandler)
 
 	fs := http.FileServer(http.Dir("static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))

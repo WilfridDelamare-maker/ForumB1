@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +7,15 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>login page in construction lol</h1>
+    <h1>Se connecter</h1>
 
-    <form method="POST" action="/login">
+    <form class="auth-form" method="POST" action="/login">
         <input type="email" name="email" placeholder="Email..."><br>
         <input type="password" name="password" placeholder="Mot de passe..."><br>
         <button type="submit">Confirmer</button>
     </form>
+    {{ if .Error }}
+    <p class="errorText"> {{ .Error }} </p>
+    {{ end }}
 </body>
 </html>

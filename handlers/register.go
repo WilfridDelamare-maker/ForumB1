@@ -6,20 +6,23 @@ import (
 )
 
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
-		RenderTemplate(w, "register.tmpl", nil)
-		return
-	}
-	if r.Method == http.MethodPost {
-		email := r.FormValue("email")
-		username := r.FormValue("username")
-		password := r.FormValue("password")
+	RenderTemplate(w, "register.tmpl", nil)
+}
 
-		fmt.Println(email, username, password) //faudra envoyer dans la bdd ces datas...
+func PostRegisterHandler(w http.ResponseWriter, r *http.Request) {
+	email := r.FormValue("email")
+	username := r.FormValue("username")
+	password := r.FormValue("password")
 
-		http.Redirect(w, r, "/", http.StatusSeeOther) // redirige vers index avec 303
-		return
-	}
+	http.SetCookie(w, &http.Cookie{
+		Name: "session_id",
+		Value: "session_nbr",
+		Path: "/",
+		MaxAge: 3600,
+		HttpOnly: true,
+	})
+		
+	fmt.Println(email, username, password) //faudra envoyer dans la bdd ces datas...
 
-	http.Error(w, "Methode interdite", http.StatusMethodNotAllowed)
+	http.Redirect(w, r, "/", http.StatusSeeOther) // redirige vers index avec 303
 }

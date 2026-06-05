@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"html/template"
 	"forum/fake"
+	"forum/models"
 )
 
 func RenderTemplate(w http.ResponseWriter, tmpl string, data any) {
@@ -21,11 +22,15 @@ func RenderTemplate(w http.ResponseWriter, tmpl string, data any) {
 }
 
 func Home( w http.ResponseWriter, r *http.Request) {
-	// gérer les routes non prévues
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		return
+	posts := fake.GetAllPosts()
+
+	username, isLogged := fake.GetCurrentUser(r)
+
+	data := models.TemplateData {
+		Username: username,
+		Posts: posts,
+		IsLogged: isLogged,
+		Error: "",
 	}
-	data := fake.GetAllPosts()
 	RenderTemplate(w, "index.tmpl", data)
 }

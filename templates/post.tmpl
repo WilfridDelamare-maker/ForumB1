@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,55 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h3>Post</h3>
+    <header>
+        <a class="brand tohover" href="/">Forum name</a>
+        <form class="search" action="/" method="GET">
+            <input type="text" name="q" placeholder="Rechercher...">
+            <button class="tohover" type="submit">OK</button>
+        </form>
+        <nav class="authNav">
+            {{ if .IsLogged }}
+            <form method="POST" action="/logout">
+                <button class="tohover" type="submit">Se déconnecter</button>
+            </form>
+            {{ else }}
+            <a class="tohover" href="register">S'inscrire</a>
+            <a class="tohover" href="login">Se connecter</a>
+            {{ end }}
+        </nav>
+    </header>
+    <article>
+        <h1>{{ .Post.Title }}</h1>
+        <p>{{ .Post.Content }}</p>
+        <small>
+            Auteur : {{ .Post.Author }} — Catégorie : {{ .Post.Category }}
+        </small>
+        <form class="like-form" action="/posts/{{ .Post.ID }}/like" method="POST">
+                <button class="tohover like" type="submit">👍</button>
+            </form>
+            <form class="like-form" action="/posts/{{ .Post.ID }}/dislike" method="POST">
+                <button class="tohover like" type="submit">👎</button>
+            </form>
+    </article>
+
+    {{ range .Comments }}
+        <section>
+            <p>{{ .Content }}</p>
+            <small>Par {{ .Author }}</small>
+            <form class="like-form" action="/comments/{{ .ID }}/like" method="POST">
+                <button class="tohover like" type="submit">👍</button>
+            </form>
+            <form class="like-form" action="/comments/{{ .ID }}/dislike" method="POST">
+                <button class="tohover like" type="submit">👎</button>
+            </form>
+        </section>
+    {{ else }}
+        <p class="elseP">Aucun commentaire pour le moment.</p>
+    {{ end }}
+
+    <form class="comment-form" action="/posts/{{ .Post.ID }}/comments" method="POST">
+        <textarea class="comment" name="content" placeholder="Qu'avez-vous à dire ?" required></textarea>
+        <button class="tohover" type="submit">Ajouter un commentaire...</button>
+    </form>
 </body>
 </html>

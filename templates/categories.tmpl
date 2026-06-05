@@ -29,7 +29,7 @@
         <nav id="sideNav">
             <a class="tohover">Populaires</a>
             <a href="/categories"class="tohover">Categories</a>
-            <a href="/random" class="tohover">Page aleatoire</a>
+            <a href="/random"class="tohover">Page aleatoire</a>
             {{ if .IsLogged }}
             <a href="/posts/create" class="tohover">Créer un post</a>
             {{ else }}
@@ -38,13 +38,11 @@
         </nav>
 
         <section class="feed">
-            {{ range .Posts }}
+            {{ range .Categories }}
             <article class="data">
                 <h3>
-                    <a href="/posts/{{ .ID }}">{{ .Title }}</a>
+                    <a href="/categories/{{ .ID }}">{{ .Name }}</a>
                 </h3>
-                <p>{{ .Content }}</p>
-                <small>{{ .Author }} - {{ .Category }}</small>
             </article>
             {{ else }}
             <p class="data">Void for now</p>
