@@ -26,12 +26,15 @@
     </header>
 
     <h1>Créer un post</h1>
-    <form class="post-create-form" action="/posts/create" method="POST">
+    <form class="post-create-form" action="/posts/create" method="POST" enctype="multipart/form-data">
         <label for="title">Titre</label>
         <input type="text" id="title" name="title" required>
 
         <label for="content">Contenu</label>
         <textarea id="content" class="comment" name="content" required></textarea>
+
+        <label for="image">Ajouter Image</label>
+        <input type="file" id="image" name="image" accept="image/png, image/jpeg, image:webp">
 
         <div class="category-checkboxes">
             {{ range .Categories }}
@@ -41,6 +44,7 @@
             </label>
             {{ end }}
         </div>
+
         {{ if .Error }}
             <p class="errorText">Entrez un titre, un contenu et selectionnez au moins une catégorie!</p>
         {{ end }}
