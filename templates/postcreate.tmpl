@@ -34,7 +34,7 @@
         <textarea id="content" class="comment" name="content" required></textarea>
 
         <label for="image">Ajouter Image</label>
-        <input type="file" id="image" name="image" accept="image/png, image/jpeg, image:webp">
+        <input type="file" id="image" name="image" accept="image/png, image/jpeg, image/webp, image/gif">
 
         <div class="category-checkboxes">
             {{ range .Categories }}
@@ -46,7 +46,7 @@
         </div>
 
         {{ if .Error }}
-            <p class="errorText">Entrez un titre, un contenu et selectionnez au moins une catégorie!</p>
+            <p class="errorText">{{ .Error }}</p>
         {{ end }}
 
         <button type="submit">Publier</button>

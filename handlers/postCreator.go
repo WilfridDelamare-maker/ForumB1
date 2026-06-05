@@ -20,8 +20,13 @@ func PostCreateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if r.URL.Query().Get("error") == "1" {
+	switch r.URL.Query().Get("error") {
+	case "1":
 		err = "Titre, Contenu ou Catégories manquant(s)"
+	case "2":
+		err = "Image trop lourde: max 20 Mo"
+	case "3":
+		err = "Probleme d'upload ou chargement de l'image"
 	}
 
 	data := models.TemplateData{
@@ -41,7 +46,17 @@ func PostCreator(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
-	
+
+	// refuser l'image si trop volumineuse (>20Mo)
+	const maxUploadSize = 20* 1024* 1024
+	r.Body = http.MaxBytesReader(w, r.Body, maxUploadSize)
+
+	err := r.ParseMultipartForm(maxUploadSize)
+	if err != nil {
+		http.Redirect(w, r, "/posts/create?error=2", http.StatusSeeOther)
+		return
+	}
+
 	title := strings.TrimSpace(r.FormValue("title"))
 	content := strings.TrimSpace(r.FormValue("content"))
 	categories := r.Form["categories"]
@@ -50,9 +65,7 @@ func PostCreator(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/posts/create?error=1", http.StatusSeeOther)
 		return
 	}
-	
-	// refuser l'image si trop volumineuse (>20Mo)
-	r.Body = http.MaxBytesReader(w, r.Body, 20*1024*1024)
+
 	// pour gérer l'upload de fichier image : avoir le path et sauvegarder l'img
 	file, header, err := r.FormFile("image")
 	if err != nil {
@@ -60,21 +73,23 @@ func PostCreator(w http.ResponseWriter, r *http.Request) {
 	} else {
 		defer file.Close()
 
-		fmt.Println("file name:", header.Filename)
-		fmt.Println("file size:", header.Size)
+		if header.Size > maxUploadSize {
+			http.Redirect(w, r, "/posts/create?error=2", http.StatusSeeOther)
+			return
+		}
 
 		imgPath := "./static/upload/" + header.Filename
 
 		destination, err := os.Create(imgPath)
 		if err != nil {
-			http.Error(w, "Erreur lors de la sauvegarde image", http.StatusInternalServerError)
+			http.Redirect(w, r, "/posts/create?error=3", http.StatusSeeOther)
 			return
 		}
 		defer destination.Close()
 
 		_, err = io.Copy(destination, file)
 		if err != nil {
-			http.Error(w, "Erreur de copie de l'image", http.StatusInternalServerError)
+			http.Redirect(w, r, "/posts/create?error=3", http.StatusSeeOther)
 			return
 		}
 		fmt.Println("Image sauvegardée au chemin:", imgPath)
