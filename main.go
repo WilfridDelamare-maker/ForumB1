@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"forum/database"
 	"net/http"
 	"forum/handlers"
 )
@@ -10,13 +9,6 @@ import (
 const port = ":8080"
 
 func main() {
-	db, err := database.InitDB()
-	if err != nil {
-		fmt.Println("Erreur database: ", err)
-		return
-	}
-
-	defer db.Close()
 	fmt.Println("Database créée et fonctionnelle")
 
 	mux := http.NewServeMux()
