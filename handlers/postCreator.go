@@ -51,6 +51,7 @@ func PostCreator(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// pour gérer l'upload de fichier image : avoir le path et sauvegarder l'img
 	file, header, err := r.FormFile("image")
 	if err != nil {
 		fmt.Println("aucune image uploadée askip")
