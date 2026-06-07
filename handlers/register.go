@@ -36,6 +36,7 @@ func PostRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(email, username, password) //faudra envoyer dans la bdd ces datas...
 
 	http.Redirect(w, r, "/", http.StatusSeeOther) // redirige vers index avec 303
+	return
 	}	
 
 	http.Redirect(w, r, "/register?error=1", http.StatusSeeOther)
