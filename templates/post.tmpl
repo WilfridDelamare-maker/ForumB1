@@ -19,8 +19,8 @@
                 <button class="tohover" type="submit">Se déconnecter</button>
             </form>
             {{ else }}
-            <a class="tohover" href="register">S'inscrire</a>
-            <a class="tohover" href="login">Se connecter</a>
+            <a class="tohover" href="/register">S'inscrire</a>
+            <a class="tohover" href="/login">Se connecter</a>
             {{ end }}
         </nav>
     </header>
@@ -31,10 +31,10 @@
             Auteur : {{ .Post.Author }} — Catégorie : {{ .Post.Category }}
         </small>
         <form class="like-form" action="/posts/{{ .Post.ID }}/like" method="POST">
-                <button class="tohover like" type="submit">👍</button>
+                <button class="tohover like" type="submit">{{ .Post.Likes }}👍</button>
             </form>
             <form class="like-form" action="/posts/{{ .Post.ID }}/dislike" method="POST">
-                <button class="tohover like" type="submit">👎</button>
+                <button class="tohover like" type="submit">{{ .Post.Dislikes }}👎</button>
             </form>
     </article>
 
@@ -43,10 +43,10 @@
             <p>{{ .Content }}</p>
             <small>Par {{ .Author }}</small>
             <form class="like-form" action="/comments/{{ .ID }}/like" method="POST">
-                <button class="tohover like" type="submit">👍</button>
+                <button class="tohover like" type="submit">{{ .Likes }}👍</button>
             </form>
             <form class="like-form" action="/comments/{{ .ID }}/dislike" method="POST">
-                <button class="tohover like" type="submit">👎</button>
+                <button class="tohover like" type="submit">{{ .Dislikes }}👎</button>
             </form>
         </section>
     {{ else }}

@@ -27,9 +27,22 @@ body {
     font-family: Roboto Slab, Helvetica, sans-serif;
 }
 
+.tohover {
+    transition: transform 0.2s ease-out;
+}
+
 .tohover:hover {
     transform: scale(1.2);
+}
+
+.errorhover {
+    display: inline-block;
     transition: transform 0.2s ease-out;
+}
+
+.errorhover:hover {
+    transform: scale(1.2);
+    color: var(--accent);
 }
 
 a {
