@@ -3,9 +3,9 @@ package database
 import "database/sql"
 
 // TogglePostLike gère le like/dislike d'un post selon 3 cas :
-// - pas encore de like → INSERT
-// - même valeur que ce qu'on clique → DELETE (toggle off)
-// - valeur opposée → UPDATE (bascule like ↔ dislike)
+// - pas encore de like -> INSERT
+// - même valeur que ce qu'on clique -> DELETE (toggle off)
+// - valeur opposée -> UPDATE (bascule like ->/<- dislike)
 func TogglePostLike(userID, postID, value int) error {
 	var existing int
 
@@ -17,7 +17,7 @@ func TogglePostLike(userID, postID, value int) error {
 		userID, postID,
 	).Scan(&existing)
 
-	// sql.ErrNoRows = aucun like existant → premier clic → on insère
+	// sql.ErrNoRows = aucun like existant -> premier clic -> on insère
 	if err == sql.ErrNoRows {
 		_, err = DB.Exec(
 			`INSERT INTO likes (user_id, post_id, value) VALUES (?, ?, ?)`,
@@ -25,12 +25,12 @@ func TogglePostLike(userID, postID, value int) error {
 		)
 		return err
 	}
-	// Autre erreur BDD inattendue
+	// Autre erreur BDD inattendue (sécurité)
 	if err != nil {
 		return err
 	}
 
-	// existing == value : l'utilisateur reclique sur le même bouton → annulation
+	// existing == value : l'utilisateur reclique sur le même bouton -> annulation
 	if existing == value {
 		_, err = DB.Exec(
 			`DELETE FROM likes WHERE user_id = ? AND post_id = ? AND comment_id IS NULL`,

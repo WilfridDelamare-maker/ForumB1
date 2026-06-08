@@ -10,12 +10,12 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-// DB est la connexion globale partagée par tous les fichiers du package database
+// DB est la variable globale partagée par tous les fichiers du package database
 var DB *sql.DB
 
 // Init ouvre la BDD et crée les tables au démarrage du serveur
 func Init() {
-	// Crée ./data/ si inexistant — MkdirAll ne fait rien si le dossier existe déjà
+	// Crée ./data/ si inexistant MkdirAll ne fait rien si le dossier existe déjà
 	// 0755 = permissions Unix : propriétaire peut tout, les autres peuvent lire/exécuter
 	if err := os.MkdirAll("./data", 0755); err != nil {
 		log.Fatal("Impossible de créer le dossier data:", err)
@@ -29,7 +29,7 @@ func Init() {
 		log.Fatal("Impossible d'ouvrir la base de données:", err)
 	}
 
-	// DB.Ping() tente réellement de joindre la BDD — c'est ici que la connexion est vérifiée
+	// DB.Ping() tente réellement de joindre la BDD c'est ici que la connexion est vérifiée
 	if err = DB.Ping(); err != nil {
 		log.Fatal("Impossible de joindre la base de données:", err)
 	}
@@ -42,7 +42,7 @@ func createTables() {
 	// pour pouvoir les exécuter en boucle plutôt qu'une par une
 	queries := []string{
 		// IF NOT EXISTS : createTables() est appelée à chaque démarrage,
-		// cette clause empêche une erreur si les tables existent déjà
+		// ce if empêche une erreur si les tables existent déjà
 		`CREATE TABLE IF NOT EXISTS users (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			email TEXT UNIQUE NOT NULL,

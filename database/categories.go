@@ -21,7 +21,7 @@ func GetAllCategories() []models.Category {
 	for rows.Next() {
 		var c models.Category
 		// Scan copie les colonnes de la ligne courante dans les champs de c
-		// L'ordre correspond exactement à l'ordre du SELECT : id → c.ID, name → c.Name
+		// L'ordre correspond exactement à l'ordre du SELECT : id -> c.ID, name -> c.Name
 		if err := rows.Scan(&c.ID, &c.Name); err == nil {
 			categories = append(categories, c)
 		}
@@ -31,7 +31,7 @@ func GetAllCategories() []models.Category {
 
 // Retourne une catégorie par son ID, et false si elle n'existe pas
 func GetCategoryByID(id int) (models.Category, bool) {
-	// QueryRow (sans s) est utilisé quand on attend au plus une seule ligne
+	// QueryRow (sans s) est utilisé quand on attend au max une seule ligne
 	// Le ? est un placeholder remplacé par id de façon sécurisée (anti injection SQL)
 	row := DB.QueryRow(`SELECT id, name FROM categories WHERE id = ?`, id)
 

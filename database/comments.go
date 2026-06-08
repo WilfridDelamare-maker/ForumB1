@@ -17,6 +17,7 @@ func CreateComment(content string, authorID, postID int) error {
 }
 
 // Retourne tous les commentaires d'un post, avec le nom de l'auteur et les compteurs de likes
+// -- fait les commentaires en sql
 func GetCommentsByPostID(postID int) []models.Comments {
 	rows, err := DB.Query(`
 		SELECT c.id, c.post_id, c.content, u.id, u.username, c.created_at,
@@ -32,7 +33,7 @@ func GetCommentsByPostID(postID int) []models.Comments {
 
 		WHERE c.post_id = ?
 
-		-- GROUP BY nécessaire car on utilise SUM — regroupe les lignes par commentaire
+		-- GROUP BY nécessaire car on utilise SUM qui regroupe les lignes par commentaire
 		GROUP BY c.id
 
 		-- Du plus ancien au plus récent (ordre chronologique de discussion)
