@@ -1,10 +1,11 @@
 package handlers
 
 import (
-	"net/http"
-	"html/template"
 	"forum/fake"
 	"forum/models"
+	"html/template"
+	"net/http"
+	"strings"
 )
 
 func RenderTemplate(w http.ResponseWriter, tmpl string, data any) {
@@ -19,9 +20,17 @@ func RenderTemplate(w http.ResponseWriter, tmpl string, data any) {
 }
 
 func Home( w http.ResponseWriter, r *http.Request) {
-	posts := fake.GetAllPosts()
-
+	var posts []models.Post
+	
 	username, isLogged := fake.GetCurrentUser(r)
+
+	research := strings.TrimSpace(r.URL.Query().Get("q"))
+
+	if research != "" {
+		posts = fake.SearchPosts(research)
+	} else {
+	posts = fake.GetAllPosts()
+	}
 
 	data := models.TemplateData {
 		Username: username,

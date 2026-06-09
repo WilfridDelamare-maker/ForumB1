@@ -70,6 +70,9 @@ header {
     font-size: 1.15rem;
     font-weight: 700;
     white-space: nowrap;
+    background-image: linear-gradient(to right, white, orange);
+    color: transparent;
+    background-clip: text;
 }
 
 .search {

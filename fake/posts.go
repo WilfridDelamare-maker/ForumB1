@@ -16,3 +16,7 @@ func GetPostById(id int) (models.Post, bool) {
 func GetPostsByCategory(category string) []models.Post {
 	return database.GetPostsByCategory(category)
 }
+
+func SearchPosts(query string) []models.Post {
+	return database.SearchPosts(query)
+}

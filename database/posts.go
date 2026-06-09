@@ -74,6 +74,40 @@ func GetPostByID(id int) (models.Post, bool) {
 	return p, true
 }
 
+func SearchPosts(research string) ([]models.Post) {
+	query := postSelectQuery + `
+		WHERE p.title LIKE ? OR p.content LIKE ?
+		GROUP BY p.id
+		ORDER BY p.created_at DESC
+	`
+
+	pattern := "%" + research + "%"
+
+	rows, err := DB.Query(query, pattern, pattern)
+	if err != nil {
+		log.Println("Erreur recherche posts:", err)
+		return nil
+	}
+	defer rows.Close()
+
+	var posts []models.Post
+
+	for rows.Next() {
+		p, err := scanPost(rows)
+		if err == nil {
+			posts = append(posts, p)
+		} else {
+			log.Println("Erreur scan recherche post:", err)
+		}
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Println("Erreur parcours recherche posts:", err)
+	}
+
+	return posts
+}
+
 // Retourne tous les posts d'une catégorie donnée (par son nom)
 func GetPostsByCategory(categoryName string) []models.Post {
 	// Sous-requête nécessaire : on ne peut pas filtrer directement sur l'alias c
