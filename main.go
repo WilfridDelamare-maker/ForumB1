@@ -2,14 +2,23 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"forum/database"
 	"forum/handlers"
+	"log"
+	"net/http"
+
+	"github.com/joho/godotenv"
 )
 
 const port = ":8080"
 
 func main() {
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Problème de chargement variables .env")
+	}
+
 	database.Init()
 	fmt.Println("Database créée et fonctionnelle")
 
@@ -45,12 +54,14 @@ func main() {
 
 	mux.HandleFunc("GET /random", handlers.RandomPageHandler)
 
+	mux.HandleFunc("GET /auth/github", handlers.GithubHandler)
+
 	fs := http.FileServer(http.Dir("static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	fmt.Println("Serveur lancé sur (http://localhost" + port + ")")
 	
-	err := http.ListenAndServe(port, mux)
+	err = http.ListenAndServe(port, mux)
 	if err != nil {
 		fmt.Println("erreur serveur:", err)
 	}
