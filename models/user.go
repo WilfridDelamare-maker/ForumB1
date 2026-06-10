@@ -6,4 +6,6 @@ type User struct {
 	Username     string
 	PasswordHash string
 	CreatedAt    string
+	Provider 	 string
+	ProviderID   string
 }

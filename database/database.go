@@ -48,8 +48,13 @@ func createTables() {
 			email TEXT UNIQUE NOT NULL,
 			username TEXT NOT NULL,
 			password_hash TEXT NOT NULL,
+			provider TEXT NOT NULL DEFAULT 'local',
+			provider_id TEXT,
 			created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 		)`,
+
+		`CREATE UNIQUE INDEX IF NOT EXISTS idx_users_provider_provider_id
+		ON users(provider, provider_id)`,
 
 		`CREATE TABLE IF NOT EXISTS sessions (
 			id TEXT PRIMARY KEY,

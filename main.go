@@ -14,6 +14,7 @@ const port = ":8080"
 
 func main() {
 
+	// golang ne gere pas le .env nativement. Il faut donc une bibliotheque pour y avoir accès
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Problème de chargement variables .env")
@@ -22,6 +23,7 @@ func main() {
 	database.Init()
 	fmt.Println("Database créée et fonctionnelle")
 
+	// on crée notre propre mux (request multiplexer), c'est ce qui permet de recevoir les url et d'appeler les bons handlers.
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /{$}", handlers.Home)
@@ -54,7 +56,8 @@ func main() {
 
 	mux.HandleFunc("GET /random", handlers.RandomPageHandler)
 
-	mux.HandleFunc("GET /auth/github", handlers.GithubHandler)
+	mux.HandleFunc("GET /auth/github", handlers.GithubLoginHandler)
+	mux.HandleFunc("GET /auth/github/callback", handlers.GitHubCallbackHandler)
 
 	fs := http.FileServer(http.Dir("static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))

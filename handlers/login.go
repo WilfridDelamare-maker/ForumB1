@@ -5,7 +5,6 @@ import (
 	"forum/database"
 	"forum/models"
 	"net/http"
-	"os"
 	"strings"
 
 	"golang.org/x/crypto/bcrypt"
@@ -73,13 +72,4 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 		MaxAge: -1,
 	})
 	http.Redirect(w, r, "/", http.StatusSeeOther)
-}
-
-func GithubHandler(w http.ResponseWriter, r *http.Request) {
-	url := "https://github.com/login/oauth/authorize" + "?client_id=" + 
-	os.Getenv("GITHUB_CLIENT_ID") + 
-	"&redirect_uri=http://localhost:8080/auth/github/callback" + 
-	"&scope=user:email"
-
-	http.Redirect(w, r, url, http.StatusSeeOther)
 }
