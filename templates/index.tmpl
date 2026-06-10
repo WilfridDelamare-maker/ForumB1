@@ -15,7 +15,7 @@
         </form>
         <nav class="authNav">
             {{ if .Username }}
-            <p class="">{{ .Username }}!</p>
+            <p class="">{{ .Username }}</p>
             {{ end }}
             {{ if .IsLogged }}
             <form method="POST" action="/logout">
