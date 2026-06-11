@@ -65,10 +65,10 @@ func main() {
 	fs := http.FileServer(http.Dir("static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	fmt.Println("Serveur lancé sur (http://localhost" + port + ")")
+	log.Println("Serveur lancé sur http://localhost" + port)
 	
 	err = http.ListenAndServe(port, mux)
 	if err != nil {
-		fmt.Println("erreur serveur:", err)
+		log.Fatal("erreur serveur:", err)
 	}
 }

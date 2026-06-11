@@ -55,6 +55,7 @@ func GitHubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		GHuser.Email = email
 	}
 
+	// créer ou retrouver l'user depuis la db
 	user, err := database.FindOrCreateGitHubUser(GHuser.ID, GHuser.Login, GHuser.Email)
 	if err != nil {
 		log.Println("Erreur user GitHub BDD:", err)
@@ -62,6 +63,7 @@ func GitHubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
     }
 
+	// ensuite on obtient le sessionid et on crée les cookies de connexion
 	sessionID, err := database.CreateSession(user.ID)
 	if err != nil {
 		log.Println("Erreur session GitHub:", err)
