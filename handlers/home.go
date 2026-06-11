@@ -25,7 +25,7 @@ get le index.tmpl */
 func Home( w http.ResponseWriter, r *http.Request) {
 	var posts []models.Post
 	
-	username, isLogged := fake.GetCurrentUser(r)
+	username, isLogged := fake.GetCurrentUserFull(r)
 
 	research := strings.TrimSpace(r.URL.Query().Get("q"))
 
@@ -36,7 +36,8 @@ func Home( w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := models.TemplateData {
-		Username: username,
+		Username: username.Username,
+		CurrentUserID: username.ID,
 		Posts: posts,
 		IsLogged: isLogged,
 		Error: "",

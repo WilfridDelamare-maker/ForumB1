@@ -24,11 +24,12 @@ func PostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	username, isLogged := fake.GetCurrentUser(r)
+	username, isLogged := fake.GetCurrentUserFull(r)
 	comments := fake.GetCommentByPostID(id)
 
 	datas := models.TemplateData{
-		Username: username,
+		Username: username.Username,
+		CurrentUserID: username.ID,
 		IsLogged: isLogged,
 		Post:     post,
 		Comments: comments,

@@ -37,6 +37,13 @@
         <small class="post-meta">
             Auteur : {{ .Post.Author }} - Catégorie : {{ .Post.Category }}
         </small>
+        {{ if eq .CurrentUserID .Post.AuthorID }}
+            <a href="/posts/{{ .Post.ID }}/edit">Modifier</a>
+
+            <form method="POST" action="/posts/{{ .Post.ID }}/delete">
+                <button type="submit">Supprimer</button>
+            </form>
+        {{ end }}
         <div class="post-actions">
             <form class="like-form" action="/posts/{{ .Post.ID }}/like" method="POST">
                 <button class="tohover like" type="submit">{{ .Post.Likes }}👍</button>

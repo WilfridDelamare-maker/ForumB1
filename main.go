@@ -45,6 +45,10 @@ func main() {
 
 	mux.HandleFunc("GET /categories/{id}", handlers.CategoryByIdHandler)
 
+	mux.HandleFunc("GET /posts/{id}/edit", handlers.PostEditHandler)
+	mux.HandleFunc("POST /posts/{id}/edit", handlers.EditPost)
+	mux.HandleFunc("POST /posts/{id}/delete", handlers.DeletePost)
+
 	mux.HandleFunc("GET /random", handlers.RandomPageHandler)
 
 	mux.HandleFunc("GET /auth/github", handlers.GithubLoginHandler)

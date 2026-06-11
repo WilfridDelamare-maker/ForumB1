@@ -4,6 +4,7 @@ type TemplateData struct {
 	Username string
 	IsLogged bool
 
+	CurrentUserID int
 	Posts []Post
 	Post Post
 

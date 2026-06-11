@@ -184,3 +184,26 @@ func CreatePost(title, content, imagePath string, authorID int, categoryIDs []in
 	// Commit valide toutes les opérations — sans ça, rien n'est réellement écrit en BDD
 	return tx.Commit()
 }
+
+
+
+
+// fonctions horribles à modifier si besoin (PL ?)
+func DeletePost(postID int, userID int) error {
+	_, err := DB.Exec(`
+		DELETE FROM posts
+		WHERE id = ? AND author_id = ?
+	`, postID, userID)
+
+	return err
+}
+
+func UpdatePost(postID int, userID int, title string, content string) error {
+	_, err := DB.Exec(`
+		UPDATE posts
+		SET title = ?, content = ?
+		WHERE id = ? AND author_id = ?
+	`, title, content, postID, userID)
+
+	return err
+}
