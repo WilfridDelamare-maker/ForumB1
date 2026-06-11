@@ -20,6 +20,8 @@ func GoogleLoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// preparer les données à envoyer à google pour vérifier 
+	// qu'on a bien droit d'accéder au site pour se Oauth
 	values := url.Values{}
 	values.Set("client_id", clientID)
 	values.Set("redirect_uri", "http://localhost:8080/auth/google/callback")
@@ -52,6 +54,11 @@ func GoogleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user, err := database.FindOrCreateGoogleUser(googleUser)
+	if err != nil {
+		log.Println("Erreur utilisateur Google:", err)
+		http.Error(w, "Erreur utilisateur", http.StatusInternalServerError)
+		return
+	}
 
 	sessionID, err := database.CreateSession(user.ID)
 	if err != nil {
