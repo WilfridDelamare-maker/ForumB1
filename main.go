@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"forum/database"
 	"forum/handlers"
 	"net/http"
@@ -12,7 +12,7 @@ const port = ":8085"
 func main() {
 
 	database.Init()
-	fmt.Println("Database créée et fonctionnelle")
+	log.Println("Database créée et fonctionnelle")
 
 	// on crée notre propre mux (request multiplexer), c'est ce qui permet de recevoir les url et d'appeler les bons handlers.
 	mux := http.NewServeMux()
@@ -56,10 +56,10 @@ func main() {
 	fs := http.FileServer(http.Dir("static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	fmt.Println("Serveur lancé sur (http://localhost" + port + ")")
+	log.Println("Serveur lancé sur http://localhost" + port)
 	
 	err := http.ListenAndServe(port, mux)
 	if err != nil {
-		fmt.Println("erreur serveur:", err)
+		log.Fatal("erreur serveur:", err)
 	}
 }

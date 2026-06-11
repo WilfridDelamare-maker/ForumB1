@@ -20,6 +20,8 @@ func GoogleLoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// preparer les données à envoyer à google pour vérifier 
+	// qu'on a bien droit d'accéder au site pour se Oauth
 	values := url.Values{}
 	values.Set("client_id", clientID)
 	values.Set("redirect_uri", "http://localhost:8085/auth/google/callback")
@@ -39,18 +41,21 @@ func GoogleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// echange le code temporaire contre un vrai token google
 	token, err := exchangeGoogleCode(code)
 	if err != nil {
 		http.Error(w, "Erreur échange token Google", http.StatusInternalServerError)
 		return
 	}
 
+	// demander les infos du google user grace au token
 	googleUser, err := getGoogleUser(token.AccessToken)
 	if err != nil {
 		http.Error(w, "Erreur récupération utilisateur Google", http.StatusInternalServerError)
 		return
 	}
 
+	// ensuite créer ou retrouver l'user dans la db
 	user, err := database.FindOrCreateGoogleUser(googleUser)
 	if err != nil {
 		log.Println("Erreur user Google BDD:", err)
@@ -58,6 +63,7 @@ func GoogleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// créer ensuite la session avec les cookies
 	sessionID, err := database.CreateSession(user.ID)
 	if err != nil {
 		log.Println("Erreur session Google:", err)
@@ -73,10 +79,11 @@ func GoogleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 	})
 
-	// puis créer ta session/cookie
+	// si tout a fonctionné rediriger vers l'accueil
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
+// fonction pour obtenir un token google en échange du code
 func exchangeGoogleCode(code string) (*models.GoogleTokenResponse, error) {
 	clientID := os.Getenv("GOOGLE_CLIENT_ID")
 	clientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
@@ -85,13 +92,14 @@ func exchangeGoogleCode(code string) (*models.GoogleTokenResponse, error) {
 		return nil, fmt.Errorf("variables OAuth Google manquantes")
 	}
 
-	data := url.Values{}
+	data := url.Values{} // construire une requete au bon format (json)
 	data.Set("client_id", clientID)
 	data.Set("client_secret", clientSecret)
 	data.Set("code", code)
 	data.Set("grant_type", "authorization_code")
 	data.Set("redirect_uri", "http://localhost:8085/auth/google/callback")
 
+	// requete POST vers google
 	req, err := http.NewRequest(
 		"POST",
 		"https://oauth2.googleapis.com/token",
@@ -101,11 +109,11 @@ func exchangeGoogleCode(code string) (*models.GoogleTokenResponse, error) {
 		return nil, err
 	}
 
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded") // le contenu est url encodé
+	req.Header.Set("Accept", "application/json") // exige une réponse JSON de google
 
 	client := &http.Client{}
-
+	// objet qui envoie la requete 
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -125,6 +133,7 @@ func exchangeGoogleCode(code string) (*models.GoogleTokenResponse, error) {
 	return &token, nil
 }
 
+// fonction pour renvoyer l'utilisateur google avec le token fourni
 func getGoogleUser(accessToken string) (*models.GoogleUser, error) {
 	req, err := http.NewRequest(
 		"GET",

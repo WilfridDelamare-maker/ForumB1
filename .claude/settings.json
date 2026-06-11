@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "PowerShell(gcc --version 2>&1)",
-      "PowerShell($env:PATH = [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"User\"\\); cd \"c:\\\\Users\\\\jeuxp\\\\Documents\\\\JS-ForumB1-Front\"; docker compose logs forum 2>&1)",
-      "PowerShell($env:PATH = [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"User\"\\); cd \"c:\\\\Users\\\\jeuxp\\\\Documents\\\\JS-ForumB1-Front\"; docker compose up -d --build 2>&1)"
-    ]
-  }
-}

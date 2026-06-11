@@ -5,6 +5,8 @@ import (
 	"errors"
 	"forum/models"
 	"strconv"
+	"strings"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -21,8 +23,11 @@ func CreateUser(email, username, password string) error {
 		`INSERT INTO users (email, username, password_hash) VALUES (?, ?, ?)`,
 		email, username, string(hash),
 	)
-	if err != nil && err.Error() == "UNIQUE constraint failed: users.email" {
-		return ErrEmailTaken
+	if err != nil {
+		errText := err.Error()
+		if strings.Contains(errText, "UNIQUE constraint failed") && strings.Contains(errText, "users.email") {
+			return ErrEmailTaken
+		}
 	}
 	return err
 }

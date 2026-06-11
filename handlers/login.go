@@ -51,7 +51,7 @@ func PostLoginHandler(w http.ResponseWriter, r *http.Request) {
 		Name:     "session_id",
 		Value:    sessionID,
 		Path:     "/",
-		MaxAge:   86400,
+		MaxAge:   86400, //24heures
 		HttpOnly: true,
 	})
 
