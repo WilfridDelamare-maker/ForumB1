@@ -16,7 +16,7 @@
         <button type="submit">Confirmer</button>
     </form>
     {{ if .Error }}
-    <p class="errorText">Email ou Nom ou Mot de passe erroné</p>
+    <p class="errorText">{{ .Error }}</p>
     {{ end }}
     
 </body>
