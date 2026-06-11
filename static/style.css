@@ -46,7 +46,7 @@ textarea {
 
 input:focus,
 textarea:focus {
-    outline: none; /* */
+    outline: none; /* evite que le contour soit coloré, pour le mettre en orange ligne en dessous */
     border-color: var(--accent);
 }
 
@@ -58,13 +58,13 @@ button {
     background: var(--accent);
     color: #07101c;
     font-weight: 700;
-    cursor: pointer;
+    cursor: pointer; /* souris devient une main sur le bouton*/
 }
 
 header {
-    position: sticky;
+    position: sticky; /*le header reste en place mais colle en haut quand on descend trop*/
     top: 0;
-    z-index: 10;
+    z-index: 10; /*le header reste toujours devant le reste si superposition*/
     display: flex;
     align-items: center;
     gap: 18px;
@@ -76,7 +76,7 @@ header {
 .brand {
     font-size: 1.15rem;
     font-weight: 700;
-    white-space: nowrap;
+    white-space: nowrap; /*pas de retour à la ligne permis*/
     background-image: linear-gradient(to right, orange, white);
     color: transparent;
     background-clip: text;
@@ -105,7 +105,7 @@ header {
     gap: 14px;
     margin-left: auto;
     color: var(--muted);
-    white-space: nowrap;
+    white-space: nowrap; /*pas de retour à la ligne dans la nav*/
 }
 
 .authNav a:hover,
@@ -123,7 +123,7 @@ header {
 
 .tohover:hover,
 .errorhover:hover {
-    transform: scale(1.2);
+    transform: scale(1.2); /*quand on passe sur l'element il s'agrandit*/
 }
 
 .layout {
@@ -266,7 +266,7 @@ input[type="checkbox"] {
     width: 18px;
     height: 18px;
     margin: 0;
-    accent-color: var(--accent);
+    accent-color: var(--accent); /*rend les cases oranges et pas bleu par defaut*/
 }
 
 .oauth-provider-form {
@@ -280,7 +280,7 @@ input[type="checkbox"] {
     justify-content: center;
     gap: 10px;
     width: 100%;
-    aspect-ratio: 1;
+    aspect-ratio: 1; /*force l'element à etre carré*/
     padding: 14px;
     border-color: var(--border);
     background: var(--panel);
@@ -291,7 +291,7 @@ input[type="checkbox"] {
 .logosOauth {
     width: 42px;
     height: 42px;
-    object-fit: contain;
+    object-fit: contain; /*pour que les logos soient pas déformés*/
 }
 
 .errorText {
@@ -304,9 +304,10 @@ input[type="checkbox"] {
     text-align: center;
 }
 
-@media (max-width: 760px) {
+/*au cas où l'écran est petit (telephone) on gère l'affichage*/
+@media (max-width: 760px) { 
     header {
-        flex-wrap: wrap;
+        flex-wrap: wrap; /*les elements peuvent aller a la ligne si manque de place*/
         padding: 14px 18px;
     }
 
@@ -322,6 +323,6 @@ input[type="checkbox"] {
     }
 
     #sideNav {
-        position: static;
+        position: static; /*le menu de gauche ne colle plus, gain de place sur mobile*/
     }
 }
