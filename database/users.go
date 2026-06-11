@@ -128,3 +128,63 @@ func FindOrCreateGitHubUser(githubID int, username, email string) (models.User, 
 
 	return user, nil
 }
+
+func FindOrCreateGoogleUser(googleUser *models.GoogleUser) (*models.User, error) {
+	var user models.User
+
+	err := DB.QueryRow(`
+		SELECT id, email, username, password_hash, provider, provider_id, created_at
+		FROM users
+		WHERE provider = ? AND provider_id = ?
+	`, "google", googleUser.ID).Scan(
+		&user.ID,
+		&user.Email,
+		&user.Username,
+		&user.PasswordHash,
+		&user.Provider,
+		&user.ProviderID,
+		&user.CreatedAt,
+	)
+
+	if err == nil {
+		return &user, nil
+	}
+
+	if err != sql.ErrNoRows {
+		return nil, err
+	}
+
+	username := googleUser.Name
+	if username == "" {
+		username = googleUser.Email
+	}
+
+	_, err = DB.Exec(`
+		INSERT INTO users (email, username, password_hash, provider, provider_id)
+		VALUES (?, ?, ?, ?, ?)
+	`, googleUser.Email, username, "", "google", googleUser.ID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = DB.QueryRow(`
+		SELECT id, email, username, password_hash, provider, provider_id, created_at
+		FROM users
+		WHERE provider = ? AND provider_id = ?
+	`, "google", googleUser.ID).Scan(
+		&user.ID,
+		&user.Email,
+		&user.Username,
+		&user.PasswordHash,
+		&user.Provider,
+		&user.ProviderID,
+		&user.CreatedAt,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}

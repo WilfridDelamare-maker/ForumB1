@@ -1,14 +1,16 @@
 package handlers
 
 import (
-	"net/http"
-	"os"
-	"net/url"
-	"io"
-	"strings"
 	"encoding/json"
+	"forum/database"
 	"forum/models"
-	//"fmt"
+	"io"
+	"net/http"
+	"net/url"
+	"os"
+	"strings"
+	"log"
+	"fmt"
 )
 
 func GoogleLoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -43,17 +45,29 @@ func GoogleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := getGoogleUser(token.AccessToken)
+	googleUser, err := getGoogleUser(token.AccessToken)
 	if err != nil {
 		http.Error(w, "Erreur récupération utilisateur Google", http.StatusInternalServerError)
 		return
 	}
 
-	fmt.Println("Google ID:", user.ID)
-	fmt.Println("Email:", user.Email)
-	fmt.Println("Name:", user.Name)
+	user, err := database.FindOrCreateGoogleUser(googleUser)
 
-	// Ensuite : findOrCreateGoogleUser(...)
+	sessionID, err := database.CreateSession(user.ID)
+	if err != nil {
+		log.Println("Erreur session Google:", err)
+		http.Error(w, "Erreur session", http.StatusInternalServerError)
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "session_id",
+		Value:    sessionID,
+		Path:     "/",
+		MaxAge:   86400,
+		HttpOnly: true,
+	})
+
 	// puis créer ta session/cookie
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
