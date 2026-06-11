@@ -24,30 +24,41 @@
             {{ end }}
         </nav>
     </header>
-    <article>
-        <h1>{{ .Post.Title }}</h1>
-        <p>{{ .Post.Content }}</p>
-        <small>
-            Auteur : {{ .Post.Author }} — Catégorie : {{ .Post.Category }}
+    <article class="post-detail">
+        <div class="post-header">
+            <h1 class="post-title">{{ .Post.Title }}</h1>
+            {{ if .Post.ImagePath }}
+            <div class="post-image-box">
+                <img class="post-image" src="{{ .Post.ImagePath }}" alt="Image du post">
+            </div>
+            {{ end }}
+        </div>
+        <p class="post-content">{{ .Post.Content }}</p>
+        <small class="post-meta">
+            Auteur : {{ .Post.Author }} - Catégorie : {{ .Post.Category }}
         </small>
-        <form class="like-form" action="/posts/{{ .Post.ID }}/like" method="POST">
+        <div class="post-actions">
+            <form class="like-form" action="/posts/{{ .Post.ID }}/like" method="POST">
                 <button class="tohover like" type="submit">{{ .Post.Likes }}👍</button>
             </form>
             <form class="like-form" action="/posts/{{ .Post.ID }}/dislike" method="POST">
                 <button class="tohover like" type="submit">{{ .Post.Dislikes }}👎</button>
             </form>
+        </div>
     </article>
 
     {{ range .Comments }}
-        <section>
-            <p>{{ .Content }}</p>
-            <small>Par {{ .Author }}</small>
-            <form class="like-form" action="/comments/{{ .ID }}/like" method="POST">
-                <button class="tohover like" type="submit">{{ .Likes }}👍</button>
-            </form>
-            <form class="like-form" action="/comments/{{ .ID }}/dislike" method="POST">
-                <button class="tohover like" type="submit">{{ .Dislikes }}👎</button>
-            </form>
+        <section class="comment-card">
+            <p class="comment-content">{{ .Content }}</p>
+            <small class="post-meta">Par {{ .Author }}</small>
+            <div class="post-actions">
+                <form class="like-form" action="/comments/{{ .ID }}/like" method="POST">
+                    <button class="tohover like" type="submit">{{ .Likes }}👍</button>
+                </form>
+                <form class="like-form" action="/comments/{{ .ID }}/dislike" method="POST">
+                    <button class="tohover like" type="submit">{{ .Dislikes }}👎</button>
+                </form>
+            </div>
         </section>
     {{ else }}
         <p class="elseP">Aucun commentaire pour le moment.</p>

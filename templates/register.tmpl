@@ -15,6 +15,20 @@
         <input type="password" name="password" placeholder="Mot de passe..."><br>
         <button type="submit">Confirmer</button>
     </form>
+    <div class="auth-form oauth-form">
+        <form class="oauth-provider-form" method="GET" action="/auth/github">
+        <button type="submit" class="oauth-btn github-btn">
+            <img class="logosOauth" src="/static/logos/GitHub_Invertocat_White.png" alt="github-logo">
+            <span>Continuer avec GitHub</span>
+        </button>
+        </form>
+        <form class="oauth-provider-form" method="GET" action="/auth/google">
+        <button type="submit" class="oauth-btn github-btn">
+            <img class="logosOauth" src="/static/logos/google_logo_.webp" alt="google-logo">
+            <span>Continuer avec Google</span>
+        </button>
+        </form>
+    </div>
     {{ if .Error }}
     <p class="errorText">{{ .Error }}</p>
     {{ end }}
