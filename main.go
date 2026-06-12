@@ -1,15 +1,22 @@
 package main
 
 import (
-	"log"
 	"forum/database"
 	"forum/handlers"
+	"log"
 	"net/http"
+
+	"github.com/joho/godotenv"
 )
 
 const port = ":8085"
 
 func main() {
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Fichier .env non chargé, utilisation des variables d'environnement système")
+	}
 
 	database.Init()
 	log.Println("Database créée et fonctionnelle")
@@ -22,7 +29,6 @@ func main() {
 
 	mux.HandleFunc("GET /register", handlers.RegisterHandler)
 	mux.HandleFunc("POST /register", handlers.PostRegisterHandler)
-
 
 	mux.HandleFunc("GET /login", handlers.LoginHandler)
 	mux.HandleFunc("POST /login", handlers.PostLoginHandler)
@@ -61,8 +67,8 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	log.Println("Serveur lancé sur http://localhost" + port)
-	
-	err := http.ListenAndServe(port, mux)
+
+	err = http.ListenAndServe(port, mux)
 	if err != nil {
 		log.Fatal("erreur serveur:", err)
 	}

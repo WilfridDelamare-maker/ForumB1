@@ -44,6 +44,7 @@ func GoogleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	// echange le code temporaire contre un vrai token google
 	token, err := exchangeGoogleCode(code)
 	if err != nil {
+		log.Println("Erreur échange token Google:", err)
 		http.Error(w, "Erreur échange token Google", http.StatusInternalServerError)
 		return
 	}
