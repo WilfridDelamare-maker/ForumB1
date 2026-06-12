@@ -12,7 +12,7 @@ func RandomPageHandler(w http.ResponseWriter, r *http.Request) {
 	postList := fake.GetAllPosts()
 
 	if len(postList) == 0 {
-		http.NotFound(w, r)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 	randomNbr := rand.Intn(len(postList))

@@ -188,7 +188,7 @@ func CreatePost(title, content, imagePath string, authorID int, categoryIDs []in
 
 
 
-// fonctions horribles à modifier si besoin (PL ?)
+// fonctions horribles à modifier si besoin (PL ?) : elle est très bien ta fonction mon piche !
 func DeletePost(postID int, userID int) error {
 	_, err := DB.Exec(`
 		DELETE FROM posts
