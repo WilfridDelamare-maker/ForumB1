@@ -95,7 +95,7 @@ header {
 
 .search button {
     border: none;
-    background: linear-gradient(to bottom right, var(--accent), #ffffff);
+    background: linear-gradient(to bottom right, orange, #ffffff);
     color: var(--bg)
 }
 
