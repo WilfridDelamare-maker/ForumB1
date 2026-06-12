@@ -3,9 +3,9 @@ package handlers
 import (
 	"forum/database"
 	"forum/fake"
+	"forum/models"
 	"net/http"
 	"strconv"
-	"forum/models"
 	"strings"
 )
 
@@ -19,13 +19,13 @@ func PostEditHandler(w http.ResponseWriter, r *http.Request) {
 
 	postID, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil {
-		http.NotFound(w, r)
+		NotFoundHandler(w, r)
 		return
 	}
 
 	post, found := database.GetPostByID(postID)
 	if !found {
-		http.NotFound(w,r)
+		NotFoundHandler(w,r)
 		return
 	}
 
@@ -84,7 +84,7 @@ func DeletePost(w http.ResponseWriter, r *http.Request) {
 
 	postID, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil {
-		http.NotFound(w, r)
+		NotFoundHandler(w, r)
 		return
 	}
 
