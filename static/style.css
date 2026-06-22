@@ -9,6 +9,19 @@
     --text: #f5f6f8;
     --muted: #aeb4c0;
     --accent: #ffa200;
+    --headerbg: #111214; 
+}
+
+body.light {
+    --bg: white;
+    --panel: #4580ff;
+    --panel2: #77bdff;
+    --border: #dadada;
+    --text: #000000;
+    --muted: #303030;
+    --accent: #1e5aff;
+    --headerbg: #4580ff; 
+
 }
 
 * {
@@ -18,7 +31,7 @@
 body {
     min-height: 100vh; /* assure que la page fait tout l'ecran*/
     margin: 0;
-    background: linear-gradient(to bottom right, #000, #292929, #000);
+    background: linear-gradient(to bottom right, var(--bg), var(--panel2) , var(--bg));
     color: var(--text);
     font-family: 'Roboto Slab', Helvetica, sans-serif;
 }
@@ -70,14 +83,19 @@ header {
     gap: 18px;
     padding: 16px 32px;
     border-bottom: 1px solid var(--border);
-    background: var(--bg);
+    background: var(--headerbg);
+}
+
+.darklightmode img {
+    max-width: 50px;
+    max-height: 50px;
 }
 
 .brand {
     font-size: 1.15rem;
     font-weight: 700;
     white-space: nowrap; /*pas de retour à la ligne permis*/
-    background-image: linear-gradient(to right, orange, white);
+    background-image: linear-gradient(to right, var(--accent), white);
     color: transparent;
     background-clip: text;
 }
@@ -91,11 +109,12 @@ header {
 
 .search input {
     border-radius: 6px 0 0 6px;
+    background: rgb(166, 166, 166);
 }
 
 .search button, .authNav button {
     border: none;
-    background: linear-gradient(to bottom right, #ffa200, rgb(255, 222, 159));
+    background: linear-gradient(to bottom right, var(--accent), rgb(255, 255, 255));
     color: var(--bg)
 }
 
@@ -216,7 +235,7 @@ section,
 
 .data p {
     margin: 0 0 14px;
-    color: #dce0e6;
+    color: var(--text);
     line-height: 1.5;
 }
 
@@ -269,7 +288,7 @@ section,
 .post-content,
 .comment-content {
     margin: 0;
-    color: #dce0e6;
+    color: var(--text);
     line-height: 1.6;
     white-space: pre-wrap;
 }

@@ -63,6 +63,8 @@ func main() {
 	mux.HandleFunc("GET /auth/google", handlers.GoogleLoginHandler)
 	mux.HandleFunc("GET /auth/google/callback", handlers.GoogleCallbackHandler)
 
+	mux.HandleFunc("POST /theme", handlers.ThemeHandler)
+
 	fs := http.FileServer(http.Dir("static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 

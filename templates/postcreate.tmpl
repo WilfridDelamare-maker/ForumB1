@@ -6,7 +6,7 @@
     <title>Créer un post</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
+<body class="{{ if not .DarkMode }}light{{ end }}">
     <header>
         <a class="brand tohover" href="/">PostHub</a>
         <form class="search" action="/" method="GET">

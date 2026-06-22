@@ -15,6 +15,7 @@ func CategoriesHandler(w http.ResponseWriter, r *http.Request) {
 		Username: username,
 		IsLogged: isLogged,
 		Categories: fake.GetAllCategories(),
+		DarkMode: GetDarkMode(r),
 	}
 
 	RenderTemplate(w, "categories.tmpl", data)
@@ -43,7 +44,7 @@ func CategoryByIdHandler(w http.ResponseWriter, r *http.Request) {
 	data := models.TemplateData{
 		Username: username,
 		IsLogged: isLogged,
-
+		DarkMode: GetDarkMode(r),
 		Posts: posts,
 	}
 

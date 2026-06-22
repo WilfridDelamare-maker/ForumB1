@@ -38,6 +38,7 @@ func PostEditHandler(w http.ResponseWriter, r *http.Request) {
 		IsLogged: true,
 		Username: user.Username,
 		Post: post,
+		DarkMode: GetDarkMode(r),
 	}
 
 	RenderTemplate(w, "postedit.tmpl", data)

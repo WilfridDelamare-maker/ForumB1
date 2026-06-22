@@ -6,7 +6,7 @@
     <title>Connexion</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
+<body class="{{ if not .DarkMode }}light{{ end }}">
     <h1>Se connecter</h1>
 
     <form class="auth-form" method="POST" action="/login">

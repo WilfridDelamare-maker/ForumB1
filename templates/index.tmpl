@@ -6,13 +6,24 @@
     <title>Forum</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
+<body class="{{ if not .DarkMode }}light{{ end }}">
     <header>
         <a class="brand tohover" href="/">PostHub</a>
         <form class="search" action="/" method="GET">
             <input type="text" name="q" placeholder="Rechercher...">
             <button class="tohover" type="submit">OK</button>
         </form>
+        <form method="POST" action="/theme">
+            <button type="submit" class="darklightmode">
+                {{ if .DarkMode }}
+                <img src="../static/logos/light-mode.png">
+                {{ else }}
+                <img src="../static/logos/dark-mode.png">
+                {{ end }}
+            </button>
+        </form>
+        
+
         <nav class="authNav">
             {{ if .Username }}
             <p class="">{{ .Username }}</p>

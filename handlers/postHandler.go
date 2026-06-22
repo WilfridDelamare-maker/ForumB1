@@ -33,6 +33,7 @@ func PostHandler(w http.ResponseWriter, r *http.Request) {
 		IsLogged: isLogged,
 		Post:     post,
 		Comments: comments,
+		DarkMode: GetDarkMode(r),
 	}
 
 	RenderTemplate(w, "post.tmpl", datas)

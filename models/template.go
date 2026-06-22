@@ -13,4 +13,6 @@ type TemplateData struct {
 	Categories []Category
 
 	Error string
+
+	DarkMode bool
 }

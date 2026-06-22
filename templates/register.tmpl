@@ -6,7 +6,7 @@
     <title>Inscription</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
+<body class="{{ if not .DarkMode }}light{{ end }}">
     <h3>S'inscrire</h3>
 
     <form class="auth-form" method="POST" action="/register">

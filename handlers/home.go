@@ -41,6 +41,7 @@ func Home( w http.ResponseWriter, r *http.Request) {
 		Posts: posts,
 		IsLogged: isLogged,
 		Error: "",
+		DarkMode: GetDarkMode(r),
 	}
 	RenderTemplate(w, "index.tmpl", data)
 }

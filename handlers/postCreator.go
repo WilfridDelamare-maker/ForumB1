@@ -40,6 +40,7 @@ func PostCreateHandler(w http.ResponseWriter, r *http.Request) {
 		IsLogged:   isLogged,
 		Categories: fake.GetAllCategories(),
 		Error:      errMsg,
+		DarkMode: GetDarkMode(r),
 	}
 	RenderTemplate(w, "postcreate.tmpl", data)
 }
