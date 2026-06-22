@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body class="{{ if not .DarkMode }}light{{ end }}">
+{{ define "content" }}
     <h3>S'inscrire</h3>
 
     <form class="auth-form" method="POST" action="/register">
@@ -32,6 +24,5 @@
     {{ if .Error }}
     <p class="errorText">{{ .Error }}</p>
     {{ end }}
-    
-</body>
-</html>
+
+    {{ end }}

@@ -19,7 +19,10 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		errMsg = "Une erreur est survenue, réessayez"
 	}
 
-	data := models.TemplateData{Error: errMsg}
+	data := models.TemplateData{
+		DarkMode: GetDarkMode(r),
+		Error: errMsg,
+	}
 	RenderTemplate(w, "register.tmpl", data)
 }
 

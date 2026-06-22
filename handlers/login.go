@@ -17,7 +17,10 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		errMsg = "Identifiant ou mot de passe incorrect"
 	}
 
-	data := models.TemplateData{Error: errMsg}
+	data := models.TemplateData{
+		Error: errMsg,
+		DarkMode: GetDarkMode(r),
+	}
 	RenderTemplate(w, "login.tmpl", data)
 }
 

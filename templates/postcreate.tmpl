@@ -1,29 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer un post</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body class="{{ if not .DarkMode }}light{{ end }}">
-    <header>
-        <a class="brand tohover" href="/">PostHub</a>
-        <form class="search" action="/" method="GET">
-            <input type="text" name="q" placeholder="Rechercher...">
-            <button class="tohover" type="submit">OK</button>
-        </form>
-        <nav class="authNav">
-            {{ if .IsLogged }}
-            <form method="POST" action="/logout">
-                <button class="tohover" type="submit">Se déconnecter</button>
-            </form>
-            {{ else }}
-            <a class="tohover" href="/register">S'inscrire</a>
-            <a class="tohover" href="/login">Se connecter</a>
-            {{ end }}
-        </nav>
-    </header>
+{{ define "content" }}
 
     <h1>Créer un post</h1>
     <form class="post-create-form" action="/posts/create" method="POST" enctype="multipart/form-data">
@@ -51,5 +26,4 @@
 
         <button type="submit">Publier</button>
     </form>
-</body>
-</html>
+{{ end }}

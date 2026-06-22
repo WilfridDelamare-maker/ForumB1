@@ -4,18 +4,25 @@ import (
 	"forum/fake"
 	"forum/models"
 	"html/template"
+	"log"
 	"net/http"
 	"strings"
 )
 
-// fonction utile pour créer les templates sans se répéter. gere les erreurs si echec. 
+// fonction utile pour créer les templates sans se répéter. gere les erreurs si echec.
 func RenderTemplate(w http.ResponseWriter, tmpl string, data any) {
-	t, err := template.ParseFiles("./templates/" + tmpl)
+	t, err := template.ParseFiles(
+	"./templates/layout.tmpl",
+	"./partials/header.tmpl",
+	"./templates/" + tmpl)
+
 	if err != nil {
+		log.Println("not render tmpl", err)
 		InternalErrorHandler(w, nil)
 		return
 	}
-	if err = t.Execute(w, data); err != nil {
+	if err = t.ExecuteTemplate(w, "layout", data); err != nil {
+		log.Println("wrong name layout", err)
 		InternalErrorHandler(w, nil)
 	}
 }
