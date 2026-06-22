@@ -21,8 +21,7 @@ services:
       - forum_data:/app/data           # BDD SQLite partagée avec le container db
       - forum_uploads:/app/static/upload  # Images uploadées persistantes
     env_file:
-      - path: .env
-        required: false                # Ne plante pas si .env absent (variables injectées autrement)
+      - .env                           # Obligatoire pour les variables OAuth locales
     depends_on:
       db:
         condition: service_healthy     # Attend que db soit prêt avant de démarrer
