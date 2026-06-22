@@ -112,7 +112,7 @@ header {
     background: rgb(166, 166, 166);
 }
 
-.search button, .authNav button {
+.search button, .authNav button, .darklightmode {
     border: none;
     background: linear-gradient(to bottom right, var(--accent), rgb(255, 255, 255));
     color: var(--bg)
