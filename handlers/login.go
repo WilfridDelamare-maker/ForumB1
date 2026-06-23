@@ -74,5 +74,14 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 		Path:   "/",
 		MaxAge: -1,
 	})
+
+	// revenir au dark theme par defaut
+	http.SetCookie(w, &http.Cookie{
+		Name: "theme",
+		Value: "",
+		Path: "/",
+		MaxAge: -1,
+	})
+
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
